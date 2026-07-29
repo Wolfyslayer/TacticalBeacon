@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 import java.util.concurrent.ConcurrentLinkedQueue
+import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
