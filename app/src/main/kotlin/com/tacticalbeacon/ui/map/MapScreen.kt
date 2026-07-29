@@ -1,11 +1,11 @@
 package com.tacticalbeacon.ui.map
 
+import org.osmdroid.views.overlay.mylocation.SimpleLocationOverlay
 import android.graphics.BitmapFactory
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
-import androidx.core.content.ContextCompat
 import com.tacticalbeacon.R
 import androidx.core.content.ContextCompat
 import org.osmdroid.tileprovider.tilesource.OnlineTileSourceBase
@@ -49,10 +49,6 @@ import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
 import kotlin.math.roundToInt
 
 private fun drawableToBitmap(drawable: Drawable): Bitmap {
-    if (drawable is BitmapDrawable) {
-        return drawable.bitmap
-    }
-
     val bitmap = Bitmap.createBitmap(
         drawable.intrinsicWidth.coerceAtLeast(1),
         drawable.intrinsicHeight.coerceAtLeast(1),
@@ -60,17 +56,18 @@ private fun drawableToBitmap(drawable: Drawable): Bitmap {
     )
 
     val canvas = Canvas(bitmap)
+
     drawable.setBounds(
         0,
         0,
         canvas.width,
         canvas.height
     )
+
     drawable.draw(canvas)
 
     return bitmap
 }
-
 private val SATELLITE_SOURCE = object : OnlineTileSourceBase(
     "Esri World Imagery",
     0,
@@ -168,7 +165,21 @@ fun MapScreen(
                     overlays.add(mapEventsOverlay)
 
                     // My location overlay
-                    
+                    val myLocationOverlay = MyLocationNewOverlay(
+    GpsMyLocationProvider(ctx),
+    this
+)
+
+myLocationOverlay.enableMyLocation()
+myLocationOverlay.enableFollowLocation()
+myLocationOverlay.setPersonIcon(
+    drawableToBitmap(
+        ContextCompat.getDrawable(
+            ctx,
+            R.drawable.ic_user_location
+        )!!
+    )
+)
                     overlays.add(myLocationOverlay)
 
                     mapView = this
@@ -227,15 +238,17 @@ fun MapScreen(
     title = pin.name
     snippet = pin.notes.ifBlank { null }
 
-    icon = ContextCompat.getDrawable(
+    icon = drawableToBitmap(
+    ContextCompat.getDrawable(
         context,
         R.drawable.ic_tactical_pin
-    )
+    )!!
+)
 
     setAnchor(
-        Marker.ANCHOR_CENTER,
-        Marker.ANCHOR_BOTTOM
-    )
+    Marker.ANCHOR_CENTER,
+    Marker.ANCHOR_BOTTOM
+)
 
     if (navigationState.targetPin?.id == pin.id) {
         alpha = 1.0f
