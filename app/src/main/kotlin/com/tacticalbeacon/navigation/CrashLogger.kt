@@ -4,9 +4,11 @@ import android.content.Context
 import java.io.File
 import java.io.FileWriter
 import java.io.IOException
+import java.io.PrintWriter
 import java.text.SimpleDateFormat
 import java.util.Date
-import java.io.PrintWriter
+import java.util.Locale
+import java.util.concurrent.ConcurrentLinkedQueue
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -54,7 +56,8 @@ class CrashLogger @Inject constructor(
     }
 
     fun getRecentLogs(count: Int = 50): List<String> {
-        return logQueue.toList().takeLast(count)
+        val list = logQueue.toList()
+        return list.subList(maxOf(0, list.size - count), list.size)
     }
 
     fun clearLogs() {

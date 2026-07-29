@@ -11,9 +11,7 @@ import com.tacticalbeacon.gps.GpsManager
 import com.tacticalbeacon.gps.HeadingManager
 import com.tacticalbeacon.navigation.NavigationEngine
 import com.tacticalbeacon.overlays.CompassOverlay
-import com.tacticalbeacon.overlays.GridOverlay
-import com.tacticalbeacon.overlays.GridOverlay
-import com.tacticalbeacon.overlays.MeasurementOverlay
+import com.tacticalbeacon.ui.map.GridOverlay
 import com.tacticalbeacon.overlays.RangeRingOverlay
 import com.tacticalbeacon.pins.PinManager
 import com.tacticalbeacon.pins.PinRenderer

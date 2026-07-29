@@ -5,7 +5,6 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.tacticalbeacon.data.model.Breadcrumb
 import com.tacticalbeacon.data.model.Pin
@@ -23,7 +22,7 @@ abstract class AppDatabase : RoomDatabase() {
     companion object {
         const val DATABASE_NAME = "tactical_beacon.db"
 
-        val MIGRATION_1_2 = object : Migration(1, 2) {
+        val MIGRATION_1_2 = object : androidx.room.migration.Migration(1, 2) {
             override fun migrate(db: SupportSQLiteDatabase) {
                 db.execSQL("ALTER TABLE pins ADD COLUMN description TEXT NOT NULL DEFAULT ''")
                 db.execSQL("ALTER TABLE pins ADD COLUMN category TEXT NOT NULL DEFAULT 'NAVIGATION'")
@@ -45,7 +44,6 @@ abstract class AppDatabase : RoomDatabase() {
                 AppDatabase::class.java,
                 DATABASE_NAME
             )
-                .addMigration(MIGRATION_1_2)
                 .fallbackToDestructiveMigration()
                 .build()
         }

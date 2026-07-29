@@ -6,8 +6,7 @@ import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Overlay
 import kotlin.math.cos
-import kotlin.math.pow
-import kotlin.math.toRadians
+import kotlin.math.sin
 
 class RangeRingOverlay : Overlay() {
 
