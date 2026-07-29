@@ -120,7 +120,7 @@ fun MapScreen(
                         GpsMyLocationProvider(ctx), this
                     ).apply {
                         enableMyLocation()
-                        enableFollowLocation()
+                        disableFollowLocation()
                     }
                     overlays.add(myLocationOverlay)
 
@@ -171,21 +171,35 @@ fun MapScreen(
                 // Draw pin markers
                 for (pin in pins) {
                     val marker = Marker(mv).apply {
-                        position = GeoPoint(pin.latitude, pin.longitude)
-                        title = pin.name
-                        snippet = pin.notes.ifBlank { null }
-                        setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
 
-                        // Highlight navigating pin
-                        if (navigationState.targetPin?.id == pin.id) {
-                            alpha = 1.0f
-                        }
+    position = GeoPoint(
+        pin.latitude,
+        pin.longitude
+    )
 
-                        setOnMarkerClickListener { _, _ ->
-                            selectedPin = pin
-                            showPinDetailSheet = true
-                            true
-                        }
+    title = pin.name
+    snippet = pin.notes.ifBlank { null }
+
+    icon = ContextCompat.getDrawable(
+        context,
+        R.drawable.ic_tactical_pin
+    )
+
+    setAnchor(
+        Marker.ANCHOR_CENTER,
+        Marker.ANCHOR_BOTTOM
+    )
+
+    if (navigationState.targetPin?.id == pin.id) {
+        alpha = 1.0f
+    }
+
+    setOnMarkerClickListener { _, _ ->
+        selectedPin = pin
+        showPinDetailSheet = true
+        true
+    }
+                    
                     }
                     mv.overlays.add(marker)
                 }
