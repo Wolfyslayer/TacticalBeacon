@@ -1,6 +1,7 @@
 package com.tacticalbeacon.pins
 
 import com.tacticalbeacon.data.model.Pin
+import com.tacticalbeacon.data.model.PinCategory
 import com.tacticalbeacon.data.model.PinColor
 import com.tacticalbeacon.data.model.PinIcon
 
@@ -31,13 +32,4 @@ object PinIcons {
         PinIcon.OBSERVATION -> PinCategory.OBSERVATION
         PinIcon.HUNTING_STAND, PinIcon.WAYPOINT -> PinCategory.NAVIGATION
     }
-}
-
-enum class PinCategory(val label: String) {
-    NAVIGATION("Navigation"),
-    SUPPLY("Supply"),
-    SAFETY("Safety"),
-    HAZARD("Hazard"),
-    OBJECTIVE("Objective"),
-    OBSERVATION("Observation")
 }

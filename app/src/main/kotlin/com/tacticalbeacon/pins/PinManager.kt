@@ -1,6 +1,8 @@
 package com.tacticalbeacon.pins
 
 import com.tacticalbeacon.data.model.Pin
+import com.tacticalbeacon.data.model.PinCategory
+import com.tacticalbeacon.data.model.PinColor
 import com.tacticalbeacon.data.repository.PinRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -47,7 +49,7 @@ class PinManager @Inject constructor(
     }
 
     fun getPinsByCategory(category: PinCategory): List<Pin> {
-        return _pins.value.filter { PinIcons.getCategory(it.icon) == category }
+        return _pins.value.filter { it.category == category }
     }
 
     fun getPinsByColor(color: PinColor): List<Pin> {
