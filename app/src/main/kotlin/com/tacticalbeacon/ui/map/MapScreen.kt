@@ -174,9 +174,11 @@ myLocationOverlay.enableMyLocation()
 myLocationOverlay.enableFollowLocation()
 
 myLocationOverlay.setPersonIcon(
-    ContextCompat.getDrawable(
-        ctx,
-        R.drawable.ic_user_location
+    drawableToBitmap(
+        ContextCompat.getDrawable(
+            ctx,
+            R.drawable.ic_user_location
+        )!!
     )
 )
 
@@ -238,11 +240,9 @@ mapView = this
     title = pin.name
     snippet = pin.notes.ifBlank { null }
 
-    icon = drawableToBitmap(
-    ContextCompat.getDrawable(
-        context,
-        R.drawable.ic_tactical_pin
-    )!!
+    icon = ContextCompat.getDrawable(
+    context,
+    R.drawable.ic_tactical_pin
 )
 
     setAnchor(
