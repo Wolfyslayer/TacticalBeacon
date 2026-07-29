@@ -46,6 +46,24 @@ fun MapScreen(
     onNavigateToPinList: () -> Unit,
     onNavigateToSettings: () -> Unit
 ) {
+    private val SATELLITE_SOURCE = object : OnlineTileSourceBase(
+    "Esri World Imagery",
+    0,
+    19,
+    256,
+    ".jpg",
+    arrayOf(
+        "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/"
+    )
+) {
+    override fun getTileURLString(pMapTileIndex: Long, pTileSize: Int): String {
+        return baseUrl +
+                MapTileIndex.getZoom(pMapTileIndex) + "/" +
+                MapTileIndex.getY(pMapTileIndex) + "/" +
+                MapTileIndex.getX(pMapTileIndex) +
+                mImageFilenameEnding
+    }
+    }
     val context = LocalContext.current
     val pins by viewModel.pins.collectAsStateWithLifecycle()
     val locationState by viewModel.locationState.collectAsStateWithLifecycle()
@@ -411,7 +429,7 @@ fun MapScreen(
                             viewModel.updateSettings(settings.copy(defaultMapType = mapType.name))
                             mapView?.setTileSource(
                                 when (mapType) {
-                                    MapType.SATELLITE -> TileSourceFactory.USGS_SAT
+                                    MapType.SATELLITE -> SATELLITE_SOURCE
                                     MapType.TOPO -> TileSourceFactory.USGS_TOPO
                                     else -> TileSourceFactory.MAPNIK
                                 }
