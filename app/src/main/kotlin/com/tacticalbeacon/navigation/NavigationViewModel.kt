@@ -12,7 +12,6 @@ import com.tacticalbeacon.data.repository.SettingsRepository
 import com.tacticalbeacon.location.CompassManager
 import com.tacticalbeacon.location.LocationForegroundService
 import com.tacticalbeacon.location.LocationManager
-import com.tacticalbeacon.overlays.UserLocationOverlay
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.*

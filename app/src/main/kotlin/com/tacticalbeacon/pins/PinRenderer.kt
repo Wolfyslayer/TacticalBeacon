@@ -21,7 +21,7 @@ class PinRenderer {
             position = GeoPoint(pin.latitude, pin.longitude)
             title = pin.name
             snippet = pin.notes.ifBlank { null }
-            anchor = Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM
+            setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
             setOnMarkerClickListener { _, _ -> true }
         }
         return marker

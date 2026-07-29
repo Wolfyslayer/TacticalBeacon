@@ -2,6 +2,8 @@ package com.tacticalbeacon.data.db
 
 import androidx.room.*
 import com.tacticalbeacon.data.model.Pin
+import com.tacticalbeacon.data.model.PinCategory
+import com.tacticalbeacon.data.model.PinStatus
 import kotlinx.coroutines.flow.Flow
 
 @Dao
