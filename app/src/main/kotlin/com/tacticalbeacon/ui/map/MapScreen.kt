@@ -42,19 +42,20 @@ import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
 import kotlin.math.roundToInt
 
 private val SATELLITE_SOURCE = object : OnlineTileSourceBase(
-    "Esri Satellite",
+    "Esri World Imagery",
     0,
     19,
     256,
     ".jpg",
-    arrayOf("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/")
+    arrayOf(
+        "https://server.arcgisonline.com/"
+    )
 ) {
-
-    override fun getTileURLString(pMapTileIndex: Long, pTileSize: Int): String {
+    override fun getTileURLString(pMapTileIndex: Long): String {
         return "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/" +
-                MapTileIndex.getZoom(pMapTileIndex) + "/" +
-                MapTileIndex.getY(pMapTileIndex) + "/" +
-                MapTileIndex.getX(pMapTileIndex) +
+                org.osmdroid.util.MapTileIndex.getZoom(pMapTileIndex) + "/" +
+                org.osmdroid.util.MapTileIndex.getY(pMapTileIndex) + "/" +
+                org.osmdroid.util.MapTileIndex.getX(pMapTileIndex) +
                 ".jpg"
     }
 }
