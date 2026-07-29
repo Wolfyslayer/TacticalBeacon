@@ -158,8 +158,11 @@ fun MapScreen(
         )
     )
 
+    isDrawAccuracyEnabled = true
+
     enableMyLocation()
     enableFollowLocation()
+    enableDirection()
 }
                     overlays.add(myLocationOverlay)
 
