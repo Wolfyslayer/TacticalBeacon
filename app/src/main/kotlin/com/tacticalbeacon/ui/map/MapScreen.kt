@@ -64,9 +64,13 @@ fun MapScreen(
     // Initialize OSMDroid configuration
     LaunchedEffect(Unit) {
         Configuration.getInstance().apply {
-            userAgentValue = "TacticalBeacon/1.0"
-            osmdroidBasePath = context.filesDir
-            osmdroidTileCache = context.cacheDir.resolve("osmdroid")
+    userAgentValue = "TacticalBeacon/1.0"
+
+    osmdroidBasePath = context.getExternalFilesDir(null)
+        ?: context.filesDir
+
+    osmdroidTileCache = context.getExternalFilesDir("osmdroid")
+        ?: context.filesDir
         }
     }
 
@@ -87,7 +91,12 @@ fun MapScreen(
                 MapView(ctx).apply {
                     setTileSource(TileSourceFactory.MAPNIK)
                     setMultiTouchControls(true)
-                    controller.setZoom(settings.lastZoom)
+                    controller.setZoom(
+    if (settings.lastZoom >= 8.0)
+        settings.lastZoom
+    else
+        16.0
+)
 
                     if (settings.lastLatitude != 0.0) {
                         controller.setCenter(GeoPoint(settings.lastLatitude, settings.lastLongitude))
