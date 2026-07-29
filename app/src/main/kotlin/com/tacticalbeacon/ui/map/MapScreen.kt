@@ -1,5 +1,6 @@
 package com.tacticalbeacon.ui.map
 
+import com.tacticalbeacon.R
 import androidx.core.content.ContextCompat
 import org.osmdroid.tileprovider.tilesource.OnlineTileSourceBase
 import org.osmdroid.util.MapTileIndex
