@@ -5,6 +5,7 @@ import com.tacticalbeacon.data.model.Pin
 import com.tacticalbeacon.location.LocationManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 import javax.inject.Singleton
 
