@@ -4,6 +4,7 @@
     android:viewportWidth="48"
     android:viewportHeight="48">
 
+    <!-- Tactical pin body -->
     <path
         android:fillColor="#8FAF3C"
         android:pathData="
@@ -13,10 +14,14 @@
         C24,46 41,31 41,19
         C41,10 34,2 24,2Z"/>
 
-    <circle
+    <!-- Center dot -->
+    <path
         android:fillColor="#111111"
-        android:cx="24"
-        android:cy="19"
-        android:r="7"/>
+        android:pathData="
+        M31,19
+        C31,22.866 27.866,26 24,26
+        C20.134,26 17,22.866 17,19
+        C17,15.134 20.134,12 24,12
+        C27.866,12 31,15.134 31,19Z"/>
 
 </vector>
