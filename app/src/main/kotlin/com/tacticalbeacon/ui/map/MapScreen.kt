@@ -1,5 +1,8 @@
 package com.tacticalbeacon.ui.map
 
+import androidx.core.content.ContextCompat
+import org.osmdroid.tileprovider.tilesource.OnlineTileSourceBase
+import org.osmdroid.util.MapTileIndex
 import android.graphics.Paint
 import android.view.MotionEvent
 import androidx.compose.animation.*
@@ -38,6 +41,24 @@ import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
 import kotlin.math.roundToInt
 
+private val SATELLITE_SOURCE = object : OnlineTileSourceBase(
+    "Esri Satellite",
+    0,
+    19,
+    256,
+    ".jpg",
+    arrayOf("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/")
+) {
+
+    override fun getTileURLString(pMapTileIndex: Long, pTileSize: Int): String {
+        return "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/" +
+                MapTileIndex.getZoom(pMapTileIndex) + "/" +
+                MapTileIndex.getY(pMapTileIndex) + "/" +
+                MapTileIndex.getX(pMapTileIndex) +
+                ".jpg"
+    }
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MapScreen(
@@ -46,25 +67,7 @@ fun MapScreen(
     onNavigateToPinList: () -> Unit,
     onNavigateToSettings: () -> Unit
 ) {
-    private val SATELLITE_SOURCE = object : OnlineTileSourceBase(
-    "Esri World Imagery",
-    0,
-    19,
-    256,
-    ".jpg",
-    arrayOf(
-        "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/"
-    )
-) {
-    override fun getTileURLString(pMapTileIndex: Long, pTileSize: Int): String {
-        return baseUrl +
-                MapTileIndex.getZoom(pMapTileIndex) + "/" +
-                MapTileIndex.getY(pMapTileIndex) + "/" +
-                MapTileIndex.getX(pMapTileIndex) +
-                mImageFilenameEnding
-    }
-    }
-    val context = LocalContext.current
+     val context = LocalContext.current
     val pins by viewModel.pins.collectAsStateWithLifecycle()
     val locationState by viewModel.locationState.collectAsStateWithLifecycle()
     val navigationState by viewModel.navigationState.collectAsStateWithLifecycle()
