@@ -165,24 +165,24 @@ fun MapScreen(
                     overlays.add(mapEventsOverlay)
 
                     // My location overlay
-                    val myLocationOverlay = MyLocationNewOverlay(
+val myLocationOverlay = MyLocationNewOverlay(
     GpsMyLocationProvider(ctx),
     this
 )
 
 myLocationOverlay.enableMyLocation()
 myLocationOverlay.enableFollowLocation()
+
 myLocationOverlay.setPersonIcon(
     ContextCompat.getDrawable(
         ctx,
         R.drawable.ic_user_location
     )
 )
-    )
-)
-                    overlays.add(myLocationOverlay)
 
-                    mapView = this
+overlays.add(myLocationOverlay)
+
+mapView = this
                 }
             },
             update = { mv ->
