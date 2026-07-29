@@ -5,6 +5,7 @@ import com.google.gson.Gson
 import com.tacticalbeacon.data.db.AppDatabase
 import com.tacticalbeacon.data.db.BreadcrumbDao
 import com.tacticalbeacon.data.db.PinDao
+import com.tacticalbeacon.data.repository.PinRepository
 import com.tacticalbeacon.gps.AccuracyManager
 import com.tacticalbeacon.gps.GpsManager
 import com.tacticalbeacon.gps.HeadingManager
