@@ -113,6 +113,9 @@ fun MapScreen(
     // Initialize OSMDroid configuration
     LaunchedEffect(Unit) {
         Configuration.getInstance().apply {
+        Configuration.getInstance().tileDownloadThreads = 8
+Configuration.getInstance().tileFileSystemThreads = 8
+Configuration.getInstance().animationSpeedDefault = 800
     userAgentValue = "TacticalBeacon/1.0"
 
     osmdroidBasePath = context.getExternalFilesDir(null)
@@ -138,7 +141,12 @@ fun MapScreen(
         AndroidView(
             factory = { ctx ->
                 MapView(ctx).apply {
-                    setTileSource(TileSourceFactory.MAPNIK)
+                    setTileSource(
+    if (settings.defaultMapType == MapType.SATELLITE.name)
+        SATELLITE_SOURCE
+    else
+        TileSourceFactory.MAPNIK
+)
                     setMultiTouchControls(true)
                     controller.setZoom(
     if (settings.lastZoom >= 8.0)
@@ -146,6 +154,14 @@ fun MapScreen(
     else
         16.0
 )
+                    setUseDataConnection(true)
+
+isTilesScaledToDpi = true
+
+setFlingEnabled(true)
+
+isHorizontalMapRepetitionEnabled = false
+isVerticalMapRepetitionEnabled = false
 
                     if (settings.lastLatitude != 0.0) {
                         controller.setCenter(GeoPoint(settings.lastLatitude, settings.lastLongitude))
