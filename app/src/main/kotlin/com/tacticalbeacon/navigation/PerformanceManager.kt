@@ -25,7 +25,7 @@ class PerformanceManager {
         return if (entry != null) {
             entry.copy(inUse = true)
         } else {
-            if (markerPool.size < MAX_POOL_SIZE) {
+            if (markerPool.size < maxPoolSize) {
                 MarkerPoolEntry(bitmap = bitmap, inUse = true)
             } else {
                 MarkerPoolEntry(bitmap = bitmap, inUse = true)

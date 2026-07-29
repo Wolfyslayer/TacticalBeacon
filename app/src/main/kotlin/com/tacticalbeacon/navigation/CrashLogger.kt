@@ -6,8 +6,7 @@ import java.io.FileWriter
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.Date
-import java.util.Locale
-import java.util.concurrent.ConcurrentLinkedQueue
+import java.io.PrintWriter
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -37,7 +36,7 @@ class CrashLogger @Inject constructor(
                 writer.write("Exception: ${throwable.javaClass.name}\n")
                 writer.write("Message: ${throwable.message}\n")
                 writer.write("Stack Trace:\n")
-                throwable.printStackTrace(writer)
+                throwable.printStackTrace(PrintWriter(FileWriter(logFile, true)))
                 writer.write("\n=== END CRASH LOG ===\n")
             }
         } catch (e: IOException) {
