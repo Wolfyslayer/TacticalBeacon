@@ -140,11 +140,27 @@ fun MapScreen(
 
                     // My location overlay
                     val myLocationOverlay = MyLocationNewOverlay(
-                        GpsMyLocationProvider(ctx), this
-                    ).apply {
-                        enableMyLocation()
-                        disableFollowLocation()
-                    }
+    GpsMyLocationProvider(ctx),
+    this
+).apply {
+
+    setPersonIcon(
+        ContextCompat.getDrawable(
+            ctx,
+            R.drawable.ic_player_location
+        )
+    )
+
+    setDirectionIcon(
+        ContextCompat.getDrawable(
+            ctx,
+            R.drawable.ic_player_arrow
+        )
+    )
+
+    enableMyLocation()
+    enableFollowLocation()
+}
                     overlays.add(myLocationOverlay)
 
                     mapView = this
