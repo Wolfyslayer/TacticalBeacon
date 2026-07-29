@@ -5,13 +5,11 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import androidx.sqlite.db.SupportSQLiteDatabase
-import com.tacticalbeacon.data.model.Breadcrumb
-import com.tacticalbeacon.data.model.Pin
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.tacticalbeacon.data.model.Breadcrumb
 import com.tacticalbeacon.data.model.Pin
+import androidx.room.migration.Migration
 
 @Database(
     entities = [Pin::class, Breadcrumb::class],
