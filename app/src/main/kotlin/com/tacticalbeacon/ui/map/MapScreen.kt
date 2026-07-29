@@ -20,8 +20,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.tacticalbeacon.R
 import com.tacticalbeacon.data.model.*
 import com.tacticalbeacon.navigation.NavigationViewModel
 import com.tacticalbeacon.tiles.SatelliteTileSource
@@ -215,6 +217,7 @@ fun MapScreen(
         )
 
         MapTopBar(
+            modifier = Modifier.align(Alignment.TopCenter),
             locationState = locationState,
             onNavigateToSettings = onNavigateToSettings
         )
@@ -228,6 +231,7 @@ fun MapScreen(
         )
 
         MapBottomBar(
+            modifier = Modifier.align(Alignment.BottomStart),
             pins = pins,
             navigationState = navigationState,
             locationState = locationState,
@@ -349,10 +353,11 @@ fun MapScreen(
 
 @Composable
 fun MapTopBar(
+    modifier: Modifier = Modifier,
     locationState: LocationState,
     onNavigateToSettings: () -> Unit
 ) {
-    Column(modifier = Modifier.align(Alignment.TopCenter)) {
+    Column(modifier = modifier) {
         AnimatedVisibility(
             visible = false,
             enter = slideInVertically() + fadeIn(),
@@ -424,6 +429,7 @@ fun MapTopBar(
 
 @Composable
 fun MapBottomBar(
+    modifier: Modifier = Modifier,
     pins: List<Pin>,
     navigationState: NavigationState,
     locationState: LocationState,
@@ -434,11 +440,7 @@ fun MapBottomBar(
 ) {
     var showMapTypeMenu by remember { mutableStateOf(false) }
 
-    Box(
-        modifier = Modifier
-            .align(Alignment.BottomStart)
-            .padding(start = 16.dp, bottom = if (navigationState.isNavigating) 120.dp else 24.dp)
-    ) {
+    Box(modifier = modifier) {
         Surface(
             onClick = { showMapTypeMenu = true },
             shape = RoundedCornerShape(8.dp),
