@@ -1,5 +1,6 @@
 package com.tacticalbeacon.navigation
 
+import com.tacticalbeacon.data.repository.AppSettings
 import android.content.Context
 import android.content.Intent
 import androidx.lifecycle.ViewModel
