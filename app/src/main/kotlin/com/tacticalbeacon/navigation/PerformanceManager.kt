@@ -13,7 +13,7 @@ import javax.inject.Singleton
 class PerformanceManager {
 
     private var markerPool: MutableList<MarkerPoolEntry> = mutableListOf()
-    private const val MAX_POOL_SIZE = 50
+    private val maxPoolSize = 50
 
     data class MarkerPoolEntry(
         val bitmap: Bitmap,

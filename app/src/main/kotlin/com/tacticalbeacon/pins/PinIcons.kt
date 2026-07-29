@@ -1,5 +1,6 @@
 package com.tacticalbeacon.pins
 
+import com.tacticalbeacon.R
 import com.tacticalbeacon.data.model.Pin
 import com.tacticalbeacon.data.model.PinCategory
 import com.tacticalbeacon.data.model.PinColor

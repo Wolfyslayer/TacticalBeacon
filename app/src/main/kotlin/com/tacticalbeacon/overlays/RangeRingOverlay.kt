@@ -3,8 +3,10 @@ package com.tacticalbeacon.overlays
 import android.graphics.Canvas
 import android.graphics.Paint
 import org.osmdroid.util.GeoPoint
-import org.osmdroid.views.MapView
-import org.osmdroid.views.overlay.Overlay
+import kotlin.math.cos
+import kotlin.math.pow
+import kotlin.math.sin
+import kotlin.math.toRadians
 
 class RangeRingOverlay : Overlay() {
 

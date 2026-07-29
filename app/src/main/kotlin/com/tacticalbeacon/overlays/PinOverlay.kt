@@ -33,9 +33,9 @@ class PinOverlay(private val mapView: MapView) : Overlay() {
         if (shadow) return
     }
 
-    fun addPin(geoPoint: GeoPoint, label: String, color: PinColor) {
+    fun addPin(geoPoint: GeoPoint, label: String, pinColor: PinColor) {
         val paint = Paint(defaultPinPaint).apply {
-            color = color.toArgb()
+            color = pinColor.toArgb()
         }
         val labelPaint = Paint(defaultLabelPaint)
         pinPaints[label] = paint
