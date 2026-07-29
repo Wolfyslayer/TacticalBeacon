@@ -259,7 +259,7 @@ fun pinIconVector(icon: PinIcon) = when (icon) {
     PinIcon.MEDICAL -> Icons.Default.LocalHospital
     PinIcon.WATER -> Icons.Default.Water
     PinIcon.FOOD -> Icons.Default.Restaurant
-    PinIcon.OBSERVATION -> Icons.Default.Binoculars
+    PinIcon.OBSERVATION -> Icons.Default.Visibility
 }
 
 fun pinColorValue(color: PinColor) = when (color) {
