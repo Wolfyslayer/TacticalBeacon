@@ -20,7 +20,7 @@ class PinRepository @Inject constructor(
 
     suspend fun savePin(pin: Pin) = pinDao.insertPin(pin)
 
-    suspend fun updatePin(pin: Pin) = pinDao.updatePin(pin.copy(updatedAt = System.currentTimeMillis()))
+    suspend fun updatePin(pin: Pin) = pinDao.updatePin(pin.copy(timeModified = System.currentTimeMillis()))
 
     suspend fun deletePin(pin: Pin) = pinDao.deletePin(pin)
 

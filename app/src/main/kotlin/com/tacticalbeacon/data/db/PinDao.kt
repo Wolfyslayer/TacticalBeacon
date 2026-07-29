@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface PinDao {
 
-    @Query("SELECT * FROM pins ORDER BY createdAt DESC")
+    @Query("SELECT * FROM pins ORDER BY timeCreated DESC")
     fun getAllPins(): Flow<List<Pin>>
 
     @Query("SELECT * FROM pins WHERE id = :id")

@@ -163,7 +163,7 @@ class NavigationViewModel @Inject constructor(
     }
 
     fun updatePin(pin: Pin) {
-        viewModelScope.launch { pinRepository.updatePin(pin.copy(updatedAt = System.currentTimeMillis())) }
+        viewModelScope.launch { pinRepository.updatePin(pin.copy(timeModified = System.currentTimeMillis())) }
     }
 
     fun deletePin(pin: Pin) {
