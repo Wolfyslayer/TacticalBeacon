@@ -1,5 +1,6 @@
 package com.tacticalbeacon.ui.map
 
+import android.graphics.BitmapFactory
 import com.tacticalbeacon.R
 import androidx.core.content.ContextCompat
 import org.osmdroid.tileprovider.tilesource.OnlineTileSourceBase
@@ -145,15 +146,15 @@ fun MapScreen(
 ).apply {
 
     setPersonIcon(
-        ContextCompat.getDrawable(
-            ctx,
+        BitmapFactory.decodeResource(
+            ctx.resources,
             R.drawable.ic_player_location
         )
     )
 
     setDirectionIcon(
-        ContextCompat.getDrawable(
-            ctx,
+        BitmapFactory.decodeResource(
+            ctx.resources,
             R.drawable.ic_player_arrow
         )
     )
@@ -162,8 +163,7 @@ fun MapScreen(
 
     enableMyLocation()
     enableFollowLocation()
-    enableDirection()
-}
+                    }
                     overlays.add(myLocationOverlay)
 
                     mapView = this
