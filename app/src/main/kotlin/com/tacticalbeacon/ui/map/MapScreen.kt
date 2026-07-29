@@ -1,6 +1,11 @@
 package com.tacticalbeacon.ui.map
 
 import android.graphics.BitmapFactory
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
+import androidx.core.content.ContextCompat
 import com.tacticalbeacon.R
 import androidx.core.content.ContextCompat
 import org.osmdroid.tileprovider.tilesource.OnlineTileSourceBase
@@ -42,6 +47,29 @@ import org.osmdroid.views.overlay.compass.CompassOverlay
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
 import kotlin.math.roundToInt
+
+private fun drawableToBitmap(drawable: Drawable): Bitmap {
+    if (drawable is BitmapDrawable) {
+        return drawable.bitmap
+    }
+
+    val bitmap = Bitmap.createBitmap(
+        drawable.intrinsicWidth.coerceAtLeast(1),
+        drawable.intrinsicHeight.coerceAtLeast(1),
+        Bitmap.Config.ARGB_8888
+    )
+
+    val canvas = Canvas(bitmap)
+    drawable.setBounds(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    )
+    drawable.draw(canvas)
+
+    return bitmap
+}
 
 private val SATELLITE_SOURCE = object : OnlineTileSourceBase(
     "Esri World Imagery",
@@ -140,30 +168,7 @@ fun MapScreen(
                     overlays.add(mapEventsOverlay)
 
                     // My location overlay
-                    val myLocationOverlay = MyLocationNewOverlay(
-    GpsMyLocationProvider(ctx),
-    this
-).apply {
-
-    setPersonIcon(
-        BitmapFactory.decodeResource(
-            ctx.resources,
-            R.drawable.ic_player_location
-        )
-    )
-
-    setDirectionIcon(
-        BitmapFactory.decodeResource(
-            ctx.resources,
-            R.drawable.ic_player_arrow
-        )
-    )
-
-    isDrawAccuracyEnabled = true
-
-    enableMyLocation()
-    enableFollowLocation()
-                    }
+                    
                     overlays.add(myLocationOverlay)
 
                     mapView = this
