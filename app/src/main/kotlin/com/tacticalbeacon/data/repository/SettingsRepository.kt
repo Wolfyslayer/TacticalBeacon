@@ -24,9 +24,20 @@ data class AppSettings(
     val keepScreenAwake: Boolean = true,
     val showGrid: Boolean = false,
     val showBreadcrumbs: Boolean = true,
+    val showCompassOverlay: Boolean = true,
+    val showRangeRings: Boolean = false,
+    val showMeasurementOverlay: Boolean = false,
+    // Theme
+    val themeMode: String = "DARK",
+    val redLightMode: Boolean = false,
+    // Coordinate format
+    val coordinateFormat: String = "DECIMAL_DEGREES",
+    // Navigation
+    val autoCenterOnUser: Boolean = true,
+    val showHeadingCone: Boolean = true,
     // Alert
     val alertVolume: Float = 0.8f,
-    val vibrationStrength: Int = 3,  // 1–5
+    val vibrationStrength: Int = 3,
     val proximityAlert200m: Boolean = true,
     val proximityAlert100m: Boolean = true,
     val proximityAlert50m: Boolean = true,
@@ -60,6 +71,14 @@ class SettingsRepository @Inject constructor(
         val KEEP_SCREEN_AWAKE = booleanPreferencesKey("keep_screen_awake")
         val SHOW_GRID = booleanPreferencesKey("show_grid")
         val SHOW_BREADCRUMBS = booleanPreferencesKey("show_breadcrumbs")
+        val SHOW_COMPASS_OVERLAY = booleanPreferencesKey("show_compass_overlay")
+        val SHOW_RANGE_RINGS = booleanPreferencesKey("show_range_rings")
+        val SHOW_MEASUREMENT_OVERLAY = booleanPreferencesKey("show_measurement_overlay")
+        val THEME_MODE = stringPreferencesKey("theme_mode")
+        val RED_LIGHT_MODE = booleanPreferencesKey("red_light_mode")
+        val COORDINATE_FORMAT = stringPreferencesKey("coordinate_format")
+        val AUTO_CENTER = booleanPreferencesKey("auto_center")
+        val SHOW_HEADING_CONE = booleanPreferencesKey("show_heading_cone")
         val ALERT_VOLUME = floatPreferencesKey("alert_volume")
         val VIBRATION_STRENGTH = intPreferencesKey("vibration_strength")
         val PROX_200 = booleanPreferencesKey("prox_200")
@@ -95,6 +114,14 @@ class SettingsRepository @Inject constructor(
                 keepScreenAwake = prefs[Keys.KEEP_SCREEN_AWAKE] ?: true,
                 showGrid = prefs[Keys.SHOW_GRID] ?: false,
                 showBreadcrumbs = prefs[Keys.SHOW_BREADCRUMBS] ?: true,
+                showCompassOverlay = prefs[Keys.SHOW_COMPASS_OVERLAY] ?: true,
+                showRangeRings = prefs[Keys.SHOW_RANGE_RINGS] ?: false,
+                showMeasurementOverlay = prefs[Keys.SHOW_MEASUREMENT_OVERLAY] ?: false,
+                themeMode = prefs[Keys.THEME_MODE] ?: "DARK",
+                redLightMode = prefs[Keys.RED_LIGHT_MODE] ?: false,
+                coordinateFormat = prefs[Keys.COORDINATE_FORMAT] ?: "DECIMAL_DEGREES",
+                autoCenterOnUser = prefs[Keys.AUTO_CENTER] ?: true,
+                showHeadingCone = prefs[Keys.SHOW_HEADING_CONE] ?: true,
                 alertVolume = prefs[Keys.ALERT_VOLUME] ?: 0.8f,
                 vibrationStrength = prefs[Keys.VIBRATION_STRENGTH] ?: 3,
                 proximityAlert200m = prefs[Keys.PROX_200] ?: true,
@@ -120,6 +147,14 @@ class SettingsRepository @Inject constructor(
 
     suspend fun updateSettings(settings: AppSettings) {
         context.dataStore.edit { prefs ->
+            prefs[Keys.SHOW_COMPASS_OVERLAY] = settings.showCompassOverlay
+            prefs[Keys.SHOW_RANGE_RINGS] = settings.showRangeRings
+            prefs[Keys.SHOW_MEASUREMENT_OVERLAY] = settings.showMeasurementOverlay
+            prefs[Keys.THEME_MODE] = settings.themeMode
+            prefs[Keys.RED_LIGHT_MODE] = settings.redLightMode
+            prefs[Keys.COORDINATE_FORMAT] = settings.coordinateFormat
+            prefs[Keys.AUTO_CENTER] = settings.autoCenterOnUser
+            prefs[Keys.SHOW_HEADING_CONE] = settings.showHeadingCone
             prefs[Keys.USE_METRIC] = settings.useMetric
             prefs[Keys.GPS_INTERVAL] = settings.gpsUpdateIntervalMs
             prefs[Keys.BATTERY_SAVER] = settings.batterySaverMode

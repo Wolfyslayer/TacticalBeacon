@@ -36,13 +36,18 @@ class PinRepository @Inject constructor(
                 ExportPin(
                     id = pin.id,
                     name = pin.name,
+                    description = pin.description,
                     notes = pin.notes,
                     latitude = pin.latitude,
                     longitude = pin.longitude,
                     altitude = pin.altitude,
                     icon = pin.icon.name,
                     color = pin.color.name,
-                    createdAt = pin.createdAt
+                    category = pin.category.name,
+                    status = pin.status.name,
+                    priority = pin.priority.name,
+                    createdAt = pin.timeCreated,
+                    timeModified = pin.timeModified
                 )
             }
         )
@@ -56,13 +61,18 @@ class PinRepository @Inject constructor(
                 Pin(
                     id = ep.id,
                     name = ep.name,
+                    description = ep.description,
                     notes = ep.notes,
                     latitude = ep.latitude,
                     longitude = ep.longitude,
                     altitude = ep.altitude,
                     icon = PinIcon.entries.firstOrNull { it.name == ep.icon } ?: PinIcon.WAYPOINT,
                     color = PinColor.entries.firstOrNull { it.name == ep.color } ?: PinColor.OLIVE,
-                    createdAt = ep.createdAt
+                    category = PinCategory.entries.firstOrNull { it.name == ep.category } ?: PinCategory.NAVIGATION,
+                    status = PinStatus.entries.firstOrNull { it.name == ep.status } ?: PinStatus.ACTIVE,
+                    priority = PinPriority.entries.firstOrNull { it.name == ep.priority } ?: PinPriority.NORMAL,
+                    timeCreated = ep.createdAt,
+                    timeModified = ep.timeModified
                 )
             }
             pinDao.insertPins(pins)
@@ -114,6 +124,9 @@ class PinRepository @Inject constructor(
             val elePattern = Regex("""<ele>(.*?)</ele>""")
             val typePattern = Regex("""<type>(.*?)</type>""")
             val colorPattern = Regex("""<tb:color[^>]*>(.*?)</tb:color>""")
+            val categoryPattern = Regex("""<tb:category[^>]*>(.*?)</tb:category>""")
+            val statusPattern = Regex("""<tb:status[^>]*>(.*?)</tb:status>""")
+            val priorityPattern = Regex("""<tb:priority[^>]*>(.*?)</tb:priority>""")
 
             for (match in wptPattern.findAll(gpxContent)) {
                 val lat = match.groupValues[1].toDoubleOrNull() ?: continue
@@ -125,18 +138,28 @@ class PinRepository @Inject constructor(
                 val ele = elePattern.find(body)?.groupValues?.get(1)?.toDoubleOrNull() ?: 0.0
                 val typeStr = typePattern.find(body)?.groupValues?.get(1) ?: ""
                 val colorStr = colorPattern.find(body)?.groupValues?.get(1) ?: ""
+                val categoryStr = categoryPattern.find(body)?.groupValues?.get(1) ?: ""
+                val statusStr = statusPattern.find(body)?.groupValues?.get(1) ?: ""
+                val priorityStr = priorityPattern.find(body)?.groupValues?.get(1) ?: ""
 
                 val icon = PinIcon.entries.firstOrNull { it.name == typeStr } ?: PinIcon.WAYPOINT
                 val color = PinColor.entries.firstOrNull { it.name == colorStr } ?: PinColor.OLIVE
+                val category = PinCategory.entries.firstOrNull { it.name == categoryStr } ?: PinCategory.NAVIGATION
+                val status = PinStatus.entries.firstOrNull { it.name == statusStr } ?: PinStatus.ACTIVE
+                val priority = PinPriority.entries.firstOrNull { it.name == priorityStr } ?: PinPriority.NORMAL
 
                 pins.add(Pin(
                     name = name,
+                    description = "",
                     notes = notes,
                     latitude = lat,
                     longitude = lon,
                     altitude = ele,
                     icon = icon,
-                    color = color
+                    color = color,
+                    category = category,
+                    status = status,
+                    priority = priority
                 ))
             }
 

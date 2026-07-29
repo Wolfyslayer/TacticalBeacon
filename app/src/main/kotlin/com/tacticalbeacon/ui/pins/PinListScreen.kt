@@ -383,6 +383,39 @@ fun PinListItem(
                 }
             }
 
+            // Category and status badges
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(6.dp)
+            ) {
+                Surface(
+                    color = TacticalColors.ElevatedSurface,
+                    shape = RoundedCornerShape(4.dp)
+                ) {
+                    Text(
+                        pin.category.label,
+                        modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = TacticalColors.OliveGreen
+                    )
+                }
+                Surface(
+                    color = TacticalColors.ElevatedSurface,
+                    shape = RoundedCornerShape(4.dp)
+                ) {
+                    Text(
+                        pin.status.label,
+                        modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = when (pin.status) {
+                            PinStatus.ACTIVE -> TacticalColors.AlertGreen
+                            PinStatus.INACTIVE -> TacticalColors.SecondaryText
+                            PinStatus.ARCHIVED -> TacticalColors.DisabledText
+                            PinStatus.COMPLETED -> TacticalColors.OliveGreen
+                        }
+                    )
+                }
+            }
+
             Column(horizontalAlignment = Alignment.End) {
                 if (distance != null) {
                     Text(

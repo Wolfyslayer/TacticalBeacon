@@ -28,8 +28,12 @@ fun PinEditDialog(
 ) {
     var name by remember { mutableStateOf(initialPin.name) }
     var notes by remember { mutableStateOf(initialPin.notes) }
+    var description by remember { mutableStateOf(initialPin.description) }
     var selectedColor by remember { mutableStateOf(initialPin.color) }
     var selectedIcon by remember { mutableStateOf(initialPin.icon) }
+    var selectedCategory by remember { mutableStateOf(initialPin.category) }
+    var selectedStatus by remember { mutableStateOf(initialPin.status) }
+    var selectedPriority by remember { mutableStateOf(initialPin.priority) }
 
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -87,6 +91,16 @@ fun PinEditDialog(
                     colors = tacticalTextFieldColors()
                 )
 
+                // Description field
+                OutlinedTextField(
+                    value = description,
+                    onValueChange = { description = it },
+                    label = { Text("DESCRIPTION") },
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = tacticalTextFieldColors()
+                )
+
                 // Notes field
                 OutlinedTextField(
                     value = notes,
@@ -97,6 +111,129 @@ fun PinEditDialog(
                     modifier = Modifier.fillMaxWidth(),
                     colors = tacticalTextFieldColors()
                 )
+
+                // Category selection
+                Text(
+                    "CATEGORY",
+                    style = MaterialTheme.typography.labelMedium,
+                    color = TacticalColors.OliveGreen,
+                    fontWeight = FontWeight.Bold
+                )
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(3),
+                    modifier = Modifier.height(120.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    items(PinCategory.entries) { category ->
+                        val isSelected = category == selectedCategory
+                        Surface(
+                            onClick = { selectedCategory = category },
+                            shape = RoundedCornerShape(8.dp),
+                            color = if (isSelected) TacticalColors.OliveGreenContainer
+                                    else TacticalColors.ElevatedSurface,
+                            border = if (isSelected) BorderStroke(1.dp, TacticalColors.OliveGreen)
+                                     else null,
+                            modifier = Modifier.aspectRatio(1f)
+                        ) {
+                            Column(
+                                modifier = Modifier.padding(4.dp),
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                verticalArrangement = Arrangement.Center
+                            ) {
+                                Text(
+                                    category.label,
+                                    style = MaterialTheme.typography.labelSmall,
+                                    color = if (isSelected) TacticalColors.OliveGreen
+                                            else TacticalColors.SecondaryText,
+                                    maxLines = 1
+                                )
+                            }
+                        }
+                    }
+                }
+
+                // Status selection
+                Text(
+                    "STATUS",
+                    style = MaterialTheme.typography.labelMedium,
+                    color = TacticalColors.OliveGreen,
+                    fontWeight = FontWeight.Bold
+                )
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(2),
+                    modifier = Modifier.height(80.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    items(PinStatus.entries) { status ->
+                        val isSelected = status == selectedStatus
+                        Surface(
+                            onClick = { selectedStatus = status },
+                            shape = RoundedCornerShape(8.dp),
+                            color = if (isSelected) TacticalColors.OliveGreenContainer
+                                    else TacticalColors.ElevatedSurface,
+                            border = if (isSelected) BorderStroke(1.dp, TacticalColors.OliveGreen)
+                                     else null,
+                            modifier = Modifier.aspectRatio(1f)
+                        ) {
+                            Column(
+                                modifier = Modifier.padding(4.dp),
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                verticalArrangement = Arrangement.Center
+                            ) {
+                                Text(
+                                    status.label,
+                                    style = MaterialTheme.typography.labelSmall,
+                                    color = if (isSelected) TacticalColors.OliveGreen
+                                            else TacticalColors.SecondaryText,
+                                    maxLines = 1
+                                )
+                            }
+                        }
+                    }
+                }
+
+                // Priority selection
+                Text(
+                    "PRIORITY",
+                    style = MaterialTheme.typography.labelMedium,
+                    color = TacticalColors.OliveGreen,
+                    fontWeight = FontWeight.Bold
+                )
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(2),
+                    modifier = Modifier.height(80.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    items(PinPriority.entries) { priority ->
+                        val isSelected = priority == selectedPriority
+                        Surface(
+                            onClick = { selectedPriority = priority },
+                            shape = RoundedCornerShape(8.dp),
+                            color = if (isSelected) TacticalColors.OliveGreenContainer
+                                    else TacticalColors.ElevatedSurface,
+                            border = if (isSelected) BorderStroke(1.dp, TacticalColors.OliveGreen)
+                                     else null,
+                            modifier = Modifier.aspectRatio(1f)
+                        ) {
+                            Column(
+                                modifier = Modifier.padding(4.dp),
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                verticalArrangement = Arrangement.Center
+                            ) {
+                                Text(
+                                    priority.label,
+                                    style = MaterialTheme.typography.labelSmall,
+                                    color = if (isSelected) TacticalColors.OliveGreen
+                                            else TacticalColors.SecondaryText,
+                                    maxLines = 1
+                                )
+                            }
+                        }
+                    }
+                }
 
                 // Icon selection
                 Text(
@@ -131,7 +268,7 @@ fun PinEditDialog(
                                     imageVector = pinIconVector(icon),
                                     contentDescription = icon.label,
                                     tint = if (isSelected) TacticalColors.OliveGreen
-                                           else TacticalColors.SecondaryText,
+                                            else TacticalColors.SecondaryText,
                                     modifier = Modifier.size(20.dp)
                                 )
                                 Text(
@@ -194,10 +331,14 @@ fun PinEditDialog(
                         onSave(
                             initialPin.copy(
                                 name = name.trim(),
+                                description = description.trim(),
                                 notes = notes.trim(),
                                 color = selectedColor,
                                 icon = selectedIcon,
-                                updatedAt = System.currentTimeMillis()
+                                category = selectedCategory,
+                                status = selectedStatus,
+                                priority = selectedPriority,
+                                timeModified = System.currentTimeMillis()
                             )
                         )
                     }

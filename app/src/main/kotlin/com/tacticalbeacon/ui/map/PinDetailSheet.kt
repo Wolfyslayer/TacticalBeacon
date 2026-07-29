@@ -163,6 +163,29 @@ fun PinDetailSheet(
                 }
             }
 
+            // Description
+            if (pin.description.isNotBlank()) {
+                Surface(
+                    color = TacticalColors.ElevatedSurface,
+                    shape = RoundedCornerShape(8.dp)
+                ) {
+                    Column(modifier = Modifier.fillMaxWidth().padding(12.dp)) {
+                        Text(
+                            "DESCRIPTION",
+                            style = MaterialTheme.typography.labelSmall,
+                            color = TacticalColors.OliveGreen,
+                            fontWeight = FontWeight.Bold
+                        )
+                        Spacer(Modifier.height(4.dp))
+                        Text(
+                            pin.description,
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = TacticalColors.HighContrastWhite
+                        )
+                    }
+                }
+            }
+
             // Notes
             if (pin.notes.isNotBlank()) {
                 Surface(
@@ -188,11 +211,69 @@ fun PinDetailSheet(
 
             // Created date
             Text(
-                "Created: ${SimpleDateFormat("dd MMM yyyy HH:mm", Locale.getDefault()).format(Date(pin.createdAt))}",
+                "Created: ${SimpleDateFormat("dd MMM yyyy HH:mm", Locale.getDefault()).format(Date(pin.timeCreated))}",
                 style = MaterialTheme.typography.labelSmall,
                 color = TacticalColors.DisabledText,
                 fontFamily = FontFamily.Monospace
             )
+
+            // Modified date
+            Text(
+                "Modified: ${SimpleDateFormat("dd MMM yyyy HH:mm", Locale.getDefault()).format(Date(pin.timeModified))}",
+                style = MaterialTheme.typography.labelSmall,
+                color = TacticalColors.DisabledText,
+                fontFamily = FontFamily.Monospace
+            )
+
+            // Category and Status
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Surface(
+                    color = TacticalColors.ElevatedSurface,
+                    shape = RoundedCornerShape(6.dp)
+                ) {
+                    Text(
+                        pin.category.label,
+                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = TacticalColors.OliveGreen
+                    )
+                }
+                Surface(
+                    color = TacticalColors.ElevatedSurface,
+                    shape = RoundedCornerShape(6.dp)
+                ) {
+                    Text(
+                        pin.status.label,
+                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = when (pin.status) {
+                            PinStatus.ACTIVE -> TacticalColors.AlertGreen
+                            PinStatus.INACTIVE -> TacticalColors.SecondaryText
+                            PinStatus.ARCHIVED -> TacticalColors.DisabledText
+                            PinStatus.COMPLETED -> TacticalColors.OliveGreen
+                        }
+                    )
+                }
+                Surface(
+                    color = TacticalColors.ElevatedSurface,
+                    shape = RoundedCornerShape(6.dp)
+                ) {
+                    Text(
+                        pin.priority.label,
+                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = when (pin.priority) {
+                            PinPriority.LOW -> TacticalColors.SecondaryText
+                            PinPriority.NORMAL -> TacticalColors.HighContrastWhite
+                            PinPriority.HIGH -> TacticalColors.AlertAmber
+                            PinPriority.CRITICAL -> TacticalColors.AlertRed
+                        }
+                    )
+                }
+            }
 
             // Action buttons
             Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {

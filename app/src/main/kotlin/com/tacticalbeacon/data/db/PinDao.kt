@@ -33,4 +33,10 @@ interface PinDao {
 
     @Query("SELECT COUNT(*) FROM pins")
     suspend fun getPinCount(): Int
+
+    @Query("SELECT * FROM pins WHERE category = :category")
+    fun getPinsByCategory(category: PinCategory): Flow<List<Pin>>
+
+    @Query("SELECT * FROM pins WHERE status = :status")
+    fun getPinsByStatus(status: PinStatus): Flow<List<Pin>>
 }
