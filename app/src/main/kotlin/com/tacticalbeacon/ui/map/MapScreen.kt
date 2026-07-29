@@ -173,11 +173,11 @@ fun MapScreen(
 myLocationOverlay.enableMyLocation()
 myLocationOverlay.enableFollowLocation()
 myLocationOverlay.setPersonIcon(
-    drawableToBitmap(
-        ContextCompat.getDrawable(
-            ctx,
-            R.drawable.ic_user_location
-        )!!
+    ContextCompat.getDrawable(
+        ctx,
+        R.drawable.ic_user_location
+    )
+)
     )
 )
                     overlays.add(myLocationOverlay)
