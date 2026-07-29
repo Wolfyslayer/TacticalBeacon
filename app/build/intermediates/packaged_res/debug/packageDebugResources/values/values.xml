@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="alert_amber">#F57F17</color>
+    <color name="alert_red">#D32F2F</color>
+    <color name="dark_surface">#121212</color>
+    <color name="high_contrast_white">#F5F5F5</color>
+    <color name="matte_black">#0A0A0A</color>
+    <color name="olive_green">#6B7C3A</color>
+    <string name="app_name">Tactical Beacon</string>
+    <string name="gps_accuracy_poor">GPS accuracy is poor. Move to an open area for better signal.</string>
+    <string name="no_gps_fix">Waiting for GPS fix...</string>
+    <string name="notification_channel_desc">Active GPS tracking for navigation</string>
+    <string name="notification_channel_name">Location Tracking</string>
+    <string name="notification_text">GPS tracking active</string>
+    <string name="notification_title">Tactical Beacon</string>
+    <string name="permission_location_rationale">Tactical Beacon requires precise location access to provide GPS navigation and proximity alerts.</string>
+    <style name="Theme.TacticalBeacon" parent="android:Theme.Material.NoTitleBar">
+        <item name="android:windowBackground">@color/matte_black</item>
+        <item name="android:statusBarColor">@color/matte_black</item>
+        <item name="android:navigationBarColor">@color/matte_black</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar">false</item>
+    </style>
+    <style name="Theme.TacticalBeacon.SplashScreen" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/matte_black</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_splash_logo</item>
+        <item name="postSplashScreenTheme">@style/Theme.TacticalBeacon</item>
+    </style>
+</resources>

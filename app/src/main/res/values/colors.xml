@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="matte_black">#0A0A0A</color>
+    <color name="dark_surface">#121212</color>
+    <color name="olive_green">#6B7C3A</color>
+    <color name="high_contrast_white">#F5F5F5</color>
+    <color name="alert_red">#D32F2F</color>
+    <color name="alert_amber">#F57F17</color>
+</resources>

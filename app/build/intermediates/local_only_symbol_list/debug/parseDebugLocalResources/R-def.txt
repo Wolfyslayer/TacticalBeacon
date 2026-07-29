@@ -1,0 +1,28 @@
+R_DEF: Internal format may change without notice
+local
+color alert_amber
+color alert_red
+color dark_surface
+color high_contrast_white
+color matte_black
+color olive_green
+drawable ic_launcher_background
+drawable ic_launcher_foreground
+drawable ic_notification
+drawable ic_splash_logo
+drawable ic_stop
+mipmap ic_launcher
+mipmap ic_launcher_round
+string app_name
+string gps_accuracy_poor
+string no_gps_fix
+string notification_channel_desc
+string notification_channel_name
+string notification_text
+string notification_title
+string permission_location_rationale
+style Theme.TacticalBeacon
+style Theme.TacticalBeacon.SplashScreen
+xml backup_rules
+xml data_extraction_rules
+xml file_provider_paths

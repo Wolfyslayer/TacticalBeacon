@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Tactical Beacon</string>
+    <string name="notification_channel_name">Location Tracking</string>
+    <string name="notification_channel_desc">Active GPS tracking for navigation</string>
+    <string name="notification_title">Tactical Beacon</string>
+    <string name="notification_text">GPS tracking active</string>
+    <string name="permission_location_rationale">Tactical Beacon requires precise location access to provide GPS navigation and proximity alerts.</string>
+    <string name="gps_accuracy_poor">GPS accuracy is poor. Move to an open area for better signal.</string>
+    <string name="no_gps_fix">Waiting for GPS fix...</string>
+</resources>
