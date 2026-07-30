@@ -47,7 +47,7 @@ class PinRenderer {
         val center = size / 2f
         val outerRadius = size / 2f - 4f
         val innerRadius = outerRadius - 10f
-        val color = pinColorToArgb(pin.color)
+        val accentColor = pinColorToArgb(pin.color)
 
         val shadowPaint = Paint().apply {
             color = android.graphics.Color.argb(80, 0, 0, 0)
@@ -57,7 +57,7 @@ class PinRenderer {
         canvas.drawCircle(center + 2f, center + 2f, outerRadius, shadowPaint)
 
         val outerPaint = Paint().apply {
-            this.color = color
+            this.color = accentColor
             style = Paint.Style.FILL
             isAntiAlias = true
         }
