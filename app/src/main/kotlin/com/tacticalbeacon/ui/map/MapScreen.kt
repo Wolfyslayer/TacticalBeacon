@@ -27,6 +27,8 @@ import com.tacticalbeacon.R
 import com.tacticalbeacon.data.model.*
 import com.tacticalbeacon.data.repository.AppSettings
 import com.tacticalbeacon.navigation.NavigationViewModel
+import com.tacticalbeacon.overlays.UserLocationOverlay
+import com.tacticalbeacon.pins.PinRenderer
 import com.tacticalbeacon.tiles.SatelliteTileSource
 import com.tacticalbeacon.tiles.TileCacheManager
 import com.tacticalbeacon.ui.theme.TacticalColors
@@ -75,6 +77,7 @@ fun MapScreen(
     var mapView by remember { mutableStateOf<MapView?>(null) }
     var isCenteredOnUser by remember { mutableStateOf(true) }
     var showMapTypeMenu by remember { mutableStateOf(false) }
+    val pinRenderer = remember { PinRenderer() }
 
     LaunchedEffect(Unit) {
         Configuration.getInstance().apply {
@@ -132,24 +135,24 @@ fun MapScreen(
                     })
                     overlays.add(mapEventsOverlay)
 
-                    val myLocationOverlay = MyLocationNewOverlay(
-                        GpsMyLocationProvider(ctx),
-                        this
-                    )
-                    myLocationOverlay.enableMyLocation()
-                    myLocationOverlay.enableFollowLocation()
-                    myLocationOverlay.setPersonIcon(
-                        drawableToBitmap(
-                            ContextCompat.getDrawable(ctx, R.drawable.ic_user_location)!!
-                        )
-                    )
-                    overlays.add(myLocationOverlay)
+                    val tacticalUserMarker = UserLocationOverlay(ctx, this).apply {
+                        setAccuracy(locationState.accuracy)
+                        setBearing(locationState.bearing)
+                        setMoving(locationState.speed > 0.5f)
+                    }
+                    overlays.add(tacticalUserMarker)
 
                     mapView = this
                 }
             },
             update = { mv ->
                 mv.overlays.removeAll { it is Marker }
+
+                mv.overlays.filterIsInstance<UserLocationOverlay>().firstOrNull()?.apply {
+                    setAccuracy(locationState.accuracy)
+                    setBearing(locationState.bearing)
+                    setMoving(locationState.speed > 0.5f)
+                }
 
                 if (settings.showBreadcrumbs && breadcrumbs.size > 1) {
                     val existingPolyline = mv.overlays.filterIsInstance<Polyline>().firstOrNull()
@@ -185,15 +188,17 @@ fun MapScreen(
                 }
 
                 for (pin in pins) {
-                    val marker = Marker(mv).apply {
+                    val isSelected = navigationState.targetPin?.id == pin.id
+                    val marker = pinRenderer.createMarker(mv, pin).apply {
                         position = GeoPoint(pin.latitude, pin.longitude)
                         title = pin.name
                         snippet = pin.notes.ifBlank { null }
-                        icon = ContextCompat.getDrawable(context, R.drawable.ic_tactical_pin)
+                        icon = android.graphics.drawable.BitmapDrawable(
+                            context.resources,
+                            pinRenderer.createTacticalBitmap(context, pin, isSelected)
+                        )
                         setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
-                        if (navigationState.targetPin?.id == pin.id) {
-                            alpha = 1.0f
-                        }
+                        alpha = if (isSelected) 1.0f else 0.95f
                         setOnMarkerClickListener { _, _ ->
                             selectedPin = pin
                             showPinDetailSheet = true
