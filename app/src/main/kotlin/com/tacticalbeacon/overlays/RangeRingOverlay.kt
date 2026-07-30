@@ -6,7 +6,9 @@ import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Overlay
 import kotlin.math.cos
+import kotlin.math.pow
 import kotlin.math.sin
+import kotlin.math.toRadians
 
 class RangeRingOverlay : Overlay() {
 
@@ -62,7 +64,7 @@ class RangeRingOverlay : Overlay() {
                 ringPaint
             )
 
-            val labelAngle = Math.toRadians(45.0)
+            val labelAngle = toRadians(45.0)
             val labelX = centerPixel.x + (radiusPx * kotlin.math.cos(labelAngle)).toFloat()
             val labelY = centerPixel.y - (radiusPx * kotlin.math.sin(labelAngle)).toFloat()
             canvas.drawText(
@@ -76,9 +78,9 @@ class RangeRingOverlay : Overlay() {
 
     private fun metersToPixels(meters: Double, latitude: Double, mapView: MapView): Double {
         val earthCircumference = 40075000.0
-        val metersPerPixel = earthCircumference * kotlin.math.cos(
-            kotlin.math.toRadians(latitude)
-        ) / (256.0 * kotlin.math.pow(2.0, mapView.zoomLevelDouble))
+        val metersPerPixel = earthCircumference * cos(
+            toRadians(latitude)
+        ) / (256.0 * pow(2.0, mapView.zoomLevelDouble))
         return meters / metersPerPixel
     }
 

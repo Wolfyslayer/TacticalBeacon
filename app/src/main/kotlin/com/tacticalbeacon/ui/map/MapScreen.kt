@@ -25,6 +25,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tacticalbeacon.R
 import com.tacticalbeacon.data.model.*
+import com.tacticalbeacon.data.repository.AppSettings
 import com.tacticalbeacon.navigation.NavigationViewModel
 import com.tacticalbeacon.tiles.SatelliteTileSource
 import com.tacticalbeacon.tiles.TileCacheManager
@@ -347,6 +348,67 @@ fun MapScreen(
                     selectedPin = null
                 }
             )
+        }
+    }
+}
+
+@Composable
+fun NavigationStatusBar(
+    navigationState: NavigationState,
+    locationState: LocationState,
+    settings: AppSettings,
+    onCompassClick: () -> Unit,
+    onStopNavigation: () -> Unit
+) {
+    if (!navigationState.isNavigating || navigationState.targetPin == null) return
+
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 72.dp, start = 16.dp, end = 16.dp)
+    ) {
+        Surface(
+            shape = RoundedCornerShape(16.dp),
+            color = TacticalColors.CardSurface.copy(alpha = 0.95f),
+            tonalElevation = 2.dp,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 12.dp, vertical = 10.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = navigationState.targetPin?.name?.uppercase() ?: "NAVIGATION",
+                        style = MaterialTheme.typography.labelLarge,
+                        color = TacticalColors.OliveGreen,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Text(
+                        text = if (locationState.isValid) {
+                            "${String.format("%.1f", navigationState.distanceMeters)} m"
+                        } else {
+                            "Waiting for GPS"
+                        },
+                        style = MaterialTheme.typography.bodySmall,
+                        color = TacticalColors.SecondaryText
+                    )
+                }
+
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    if (settings.showCompassOverlay) {
+                        IconButton(onClick = onCompassClick) {
+                            Icon(Icons.Default.Explore, null, tint = TacticalColors.OliveGreen)
+                        }
+                    }
+                    IconButton(onClick = onStopNavigation) {
+                        Icon(Icons.Default.Close, null, tint = TacticalColors.AlertAmber)
+                    }
+                }
+            }
         }
     }
 }

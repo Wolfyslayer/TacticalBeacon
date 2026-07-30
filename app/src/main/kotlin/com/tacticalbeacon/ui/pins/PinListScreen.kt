@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tacticalbeacon.data.model.Pin
+import com.tacticalbeacon.data.model.PinStatus
 import com.tacticalbeacon.navigation.NavigationViewModel
 import com.tacticalbeacon.ui.map.PinDetailSheet
 import com.tacticalbeacon.ui.map.pinColorValue

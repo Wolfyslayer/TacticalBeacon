@@ -14,8 +14,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.tacticalbeacon.data.model.Pin
 import com.tacticalbeacon.data.model.LocationState
+import com.tacticalbeacon.data.model.Pin
+import com.tacticalbeacon.data.model.PinPriority
+import com.tacticalbeacon.data.model.PinStatus
 import com.tacticalbeacon.location.LocationManager
 import com.tacticalbeacon.ui.theme.TacticalColors
 import java.text.SimpleDateFormat

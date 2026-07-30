@@ -95,7 +95,7 @@ fun SettingsScreen(
                 )
                 SettingsDivider()
                 SettingsToggle(
-                    icon = Icons.Default.CompassOn,
+                    icon = Icons.Default.Explore,
                     title = "Compass Overlay",
                     subtitle = "Show compass rose on map",
                     checked = localSettings.showCompassOverlay,
@@ -111,7 +111,7 @@ fun SettingsScreen(
                 )
                 SettingsDivider()
                 SettingsToggle(
-                    icon = Icons.Default.Ruler,
+                    icon = Icons.Default.Straighten,
                     title = "Measurement Overlay",
                     subtitle = "Show measurement tools on map",
                     checked = localSettings.showMeasurementOverlay,
