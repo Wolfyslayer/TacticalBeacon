@@ -30,12 +30,13 @@ class PinRenderer {
 
     fun getMarkerScale(pin: Pin, isSelected: Boolean): Float {
         val baseScale = when (pin.priority) {
-            PinPriority.CRITICAL -> 1.18f
+            PinPriority.CRITICAL -> 1.22f
             PinPriority.HIGH -> 1.10f
             PinPriority.NORMAL -> 1.0f
-            PinPriority.LOW -> 0.9f
+            PinPriority.LOW -> 0.92f
         }
-        return if (isSelected) baseScale + 0.08f else baseScale
+        val selectionBoost = if (isSelected) 0.06f else 0.0f
+        return baseScale + selectionBoost
     }
 
     fun createTacticalBitmap(context: Context, pin: Pin, isSelected: Boolean = false): Bitmap {
@@ -46,7 +47,7 @@ class PinRenderer {
         val center = size / 2f
         val outerRadius = size / 2f - 4f
         val innerRadius = outerRadius - 10f
-        val color = pinColorToArgb(pin.color)
+        val accentColor = pinColorToArgb(pin.color)
 
         val shadowPaint = Paint().apply {
             color = android.graphics.Color.argb(80, 0, 0, 0)
@@ -56,7 +57,7 @@ class PinRenderer {
         canvas.drawCircle(center + 2f, center + 2f, outerRadius, shadowPaint)
 
         val outerPaint = Paint().apply {
-            this.color = color
+            this.color = accentColor
             style = Paint.Style.FILL
             isAntiAlias = true
         }
