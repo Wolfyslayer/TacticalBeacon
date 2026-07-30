@@ -244,9 +244,9 @@ fun MapScreen(
                 mapView?.setTileSource(
                     when (mapType) {
                         MapType.SATELLITE -> SatelliteTileSource
-                        MapType.TOPO -> TileSourceFactory.USGS_TOPO
-                        MapType.HYBRID -> TileSourceFactory.HYBRID
-                        MapType.TERRAIN -> TileSourceFactory.TERRAIN
+                        MapType.TOPO -> TileSourceFactory.MAPNIK
+                        MapType.HYBRID -> TileSourceFactory.MAPNIK
+                        MapType.TERRAIN -> TileSourceFactory.MAPNIK
                         MapType.DARK -> TileSourceFactory.MAPNIK
                         else -> TileSourceFactory.MAPNIK
                     }

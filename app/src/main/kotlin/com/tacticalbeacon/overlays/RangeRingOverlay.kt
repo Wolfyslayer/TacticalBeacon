@@ -64,7 +64,7 @@ class RangeRingOverlay : Overlay() {
                 ringPaint
             )
 
-            val labelAngle = toRadians(45.0)
+            val labelAngle = Math.toRadians(45.0)
             val labelX = centerPixel.x + (radiusPx * kotlin.math.cos(labelAngle)).toFloat()
             val labelY = centerPixel.y - (radiusPx * kotlin.math.sin(labelAngle)).toFloat()
             canvas.drawText(
@@ -79,7 +79,7 @@ class RangeRingOverlay : Overlay() {
     private fun metersToPixels(meters: Double, latitude: Double, mapView: MapView): Double {
         val earthCircumference = 40075000.0
         val metersPerPixel = earthCircumference * cos(
-            toRadians(latitude)
+            Math.toRadians(latitude)
         ) / (256.0 * pow(2.0, mapView.zoomLevelDouble))
         return meters / metersPerPixel
     }

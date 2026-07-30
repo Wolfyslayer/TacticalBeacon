@@ -63,9 +63,9 @@ class TileCacheManager(private val context: Context) {
     fun getTileSourceByName(name: String): org.osmdroid.tileprovider.tilesource.ITileSource {
         return when (name) {
             "SATELLITE" -> SatelliteTileSource
-            "TOPO" -> TileSourceFactory.USGS_TOPO
-            "HYBRID" -> TileSourceFactory.HYBRID
-            "TERRAIN" -> TileSourceFactory.TERRAIN
+            "TOPO" -> TileSourceFactory.MAPNIK
+            "HYBRID" -> TileSourceFactory.MAPNIK
+            "TERRAIN" -> TileSourceFactory.MAPNIK
             "DARK" -> TileSourceFactory.MAPNIK
             else -> TileSourceFactory.MAPNIK
         }
