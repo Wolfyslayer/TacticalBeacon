@@ -2,12 +2,14 @@ package com.tacticalbeacon.data.db
 
 import androidx.room.*
 import com.tacticalbeacon.data.model.Pin
+import com.tacticalbeacon.data.model.PinCategory
+import com.tacticalbeacon.data.model.PinStatus
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface PinDao {
 
-    @Query("SELECT * FROM pins ORDER BY createdAt DESC")
+    @Query("SELECT * FROM pins ORDER BY timeCreated DESC")
     fun getAllPins(): Flow<List<Pin>>
 
     @Query("SELECT * FROM pins WHERE id = :id")
@@ -33,4 +35,10 @@ interface PinDao {
 
     @Query("SELECT COUNT(*) FROM pins")
     suspend fun getPinCount(): Int
+
+    @Query("SELECT * FROM pins WHERE category = :category")
+    fun getPinsByCategory(category: PinCategory): Flow<List<Pin>>
+
+    @Query("SELECT * FROM pins WHERE status = :status")
+    fun getPinsByStatus(status: PinStatus): Flow<List<Pin>>
 }

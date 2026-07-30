@@ -48,6 +48,14 @@ object TacticalColors {
     val ProxImmediate = Color(0xFFD32F2F)
     val ProxCritical = Color(0xFFFF1744)
     val ProxArrived = Color(0xFF00E676)
+
+    // Red light mode
+    val RedLightBackground = Color(0xFF0A0A0A)
+    val RedLightSurface = Color(0xFF1A0A0A)
+    val RedLightCard = Color(0xFF2A1515)
+    val RedLightAccent = Color(0xFF8B0000)
+    val RedLightText = Color(0xFF8B0000)
+    val RedLightDim = Color(0xFF3A1515)
 }
 
 private val TacticalDarkColorScheme = darkColorScheme(

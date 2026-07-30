@@ -76,24 +76,8 @@ fun SettingsScreen(
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
 
-            // ─── Units ────────────────────────────────────────────────────────
-            SettingsSection(title = "UNITS & DISPLAY") {
-                SettingsToggle(
-                    icon = Icons.Default.Straighten,
-                    title = "Metric Units",
-                    subtitle = if (localSettings.useMetric) "Meters, kilometers" else "Feet, miles",
-                    checked = localSettings.useMetric,
-                    onCheckedChange = { localSettings = localSettings.copy(useMetric = it) }
-                )
-                SettingsDivider()
-                SettingsToggle(
-                    icon = Icons.Default.ScreenLockPortrait,
-                    title = "Keep Screen Awake",
-                    subtitle = "Prevent screen from turning off during navigation",
-                    checked = localSettings.keepScreenAwake,
-                    onCheckedChange = { localSettings = localSettings.copy(keepScreenAwake = it) }
-                )
-                SettingsDivider()
+            // ─── Map & Display ─────────────────────────────────────────────
+            SettingsSection(title = "MAP & DISPLAY") {
                 SettingsToggle(
                     icon = Icons.Default.GridOn,
                     title = "Grid Overlay",
@@ -109,6 +93,88 @@ fun SettingsScreen(
                     checked = localSettings.showBreadcrumbs,
                     onCheckedChange = { localSettings = localSettings.copy(showBreadcrumbs = it) }
                 )
+                SettingsDivider()
+                SettingsToggle(
+                    icon = Icons.Default.Explore,
+                    title = "Compass Overlay",
+                    subtitle = "Show compass rose on map",
+                    checked = localSettings.showCompassOverlay,
+                    onCheckedChange = { localSettings = localSettings.copy(showCompassOverlay = it) }
+                )
+                SettingsDivider()
+                SettingsToggle(
+                    icon = Icons.Default.Circle,
+                    title = "Range Rings",
+                    subtitle = "Show distance rings around user",
+                    checked = localSettings.showRangeRings,
+                    onCheckedChange = { localSettings = localSettings.copy(showRangeRings = it) }
+                )
+                SettingsDivider()
+                SettingsToggle(
+                    icon = Icons.Default.Straighten,
+                    title = "Measurement Overlay",
+                    subtitle = "Show measurement tools on map",
+                    checked = localSettings.showMeasurementOverlay,
+                    onCheckedChange = { localSettings = localSettings.copy(showMeasurementOverlay = it) }
+                )
+                SettingsDivider()
+                SettingsToggle(
+                    icon = Icons.Default.DarkMode,
+                    title = "Red Light Mode",
+                    subtitle = "Preserve night vision with red tint",
+                    checked = localSettings.redLightMode,
+                    onCheckedChange = { localSettings = localSettings.copy(redLightMode = it) }
+                )
+            }
+
+            // ─── Coordinates ────────────────────────────────────────────
+            SettingsSection(title = "COORDINATES") {
+                val coordOptions = listOf(
+                    "DECIMAL_DEGREES" to "Decimal Degrees",
+                    "MGRS" to "MGRS",
+                    "UTM" to "UTM"
+                )
+                Column(modifier = Modifier.padding(vertical = 8.dp)) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            Icons.Default.LocationOn,
+                            null,
+                            tint = TacticalColors.OliveGreen,
+                            modifier = Modifier.size(24.dp)
+                        )
+                        Spacer(Modifier.width(12.dp))
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(
+                                "Coordinate Format",
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = TacticalColors.HighContrastWhite
+                            )
+                            Text(
+                                coordOptions.find { it.first == localSettings.coordinateFormat }?.second
+                                    ?: "Decimal Degrees",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = TacticalColors.SecondaryText
+                            )
+                        }
+                    }
+                    Slider(
+                        value = coordOptions.indexOfFirst { it.first == localSettings.coordinateFormat }.toFloat(),
+                        onValueChange = { v ->
+                            val idx = v.toInt().coerceIn(0, coordOptions.size - 1)
+                            localSettings = localSettings.copy(coordinateFormat = coordOptions[idx].first)
+                        },
+                        valueRange = 0f..(coordOptions.size - 1).toFloat(),
+                        steps = coordOptions.size - 1,
+                        colors = SliderDefaults.colors(
+                            thumbColor = TacticalColors.OliveGreen,
+                            activeTrackColor = TacticalColors.OliveGreen,
+                            inactiveTrackColor = TacticalColors.ElevatedSurface
+                        )
+                    )
+                }
             }
 
             // ─── GPS ──────────────────────────────────────────────────────────

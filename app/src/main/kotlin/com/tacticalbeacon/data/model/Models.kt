@@ -34,21 +34,55 @@ enum class PinColor(val label: String, val hexColor: String) {
     ORANGE("Orange", "#E65100")
 }
 
-// ─── Pin Entity (Room) ────────────────────────────────────────────────────────
+// ─── Pin Entity (Room) ────────────────────────────────────────────────────
 
 @Entity(tableName = "pins")
 data class Pin(
     @PrimaryKey val id: String = UUID.randomUUID().toString(),
     val name: String,
+    val description: String = "",
     val notes: String = "",
     val latitude: Double,
     val longitude: Double,
     val altitude: Double = 0.0,
     val icon: PinIcon = PinIcon.WAYPOINT,
     val color: PinColor = PinColor.OLIVE,
-    val createdAt: Long = System.currentTimeMillis(),
-    val updatedAt: Long = System.currentTimeMillis()
+    val category: PinCategory = PinCategory.NAVIGATION,
+    val status: PinStatus = PinStatus.ACTIVE,
+    val priority: PinPriority = PinPriority.NORMAL,
+    val creator: String = "",
+    val timeCreated: Long = System.currentTimeMillis(),
+    val timeModified: Long = System.currentTimeMillis()
 )
+
+// ─── Pin Category ──────────────────────────────────────────────────────────
+
+enum class PinCategory(val label: String) {
+    NAVIGATION("Navigation"),
+    SUPPLY("Supply"),
+    SAFETY("Safety"),
+    HAZARD("Hazard"),
+    OBJECTIVE("Objective"),
+    OBSERVATION("Observation")
+}
+
+// ─── Pin Status ────────────────────────────────────────────────────────────
+
+enum class PinStatus(val label: String) {
+    ACTIVE("Active"),
+    INACTIVE("Inactive"),
+    ARCHIVED("Archived"),
+    COMPLETED("Completed")
+}
+
+// ─── Pin Priority ──────────────────────────────────────────────────────────
+
+enum class PinPriority(val label: String, val order: Int) {
+    LOW("Low", 1),
+    NORMAL("Normal", 2),
+    HIGH("High", 3),
+    CRITICAL("Critical", 4)
+}
 
 // ─── Breadcrumb Entity (Room) ─────────────────────────────────────────────────
 
@@ -131,13 +165,18 @@ fun getAlertIntervalMs(distanceMeters: Double): Long? {
 data class ExportPin(
     val id: String,
     val name: String,
+    val description: String,
     val notes: String,
     val latitude: Double,
     val longitude: Double,
     val altitude: Double,
     val icon: String,
     val color: String,
-    val createdAt: Long
+    val category: String,
+    val status: String,
+    val priority: String,
+    val createdAt: Long,
+    val timeModified: Long
 )
 
 data class ExportData(
@@ -153,5 +192,8 @@ enum class MapType(val label: String) {
     STANDARD("Standard"),
     SATELLITE("Satellite"),
     TOPO("Topographic"),
+    HYBRID("Hybrid"),
+    TERRAIN("Terrain"),
+    DARK("Dark Map"),
     OFFLINE("Offline")
 }

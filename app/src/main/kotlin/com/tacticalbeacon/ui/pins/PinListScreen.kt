@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tacticalbeacon.data.model.Pin
+import com.tacticalbeacon.data.model.PinStatus
 import com.tacticalbeacon.navigation.NavigationViewModel
 import com.tacticalbeacon.ui.map.PinDetailSheet
 import com.tacticalbeacon.ui.map.pinColorValue
@@ -379,6 +380,39 @@ fun PinListItem(
                         style = MaterialTheme.typography.bodySmall,
                         color = TacticalColors.SecondaryText,
                         maxLines = 1
+                    )
+                }
+            }
+
+            // Category and status badges
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(6.dp)
+            ) {
+                Surface(
+                    color = TacticalColors.ElevatedSurface,
+                    shape = RoundedCornerShape(4.dp)
+                ) {
+                    Text(
+                        pin.category.label,
+                        modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = TacticalColors.OliveGreen
+                    )
+                }
+                Surface(
+                    color = TacticalColors.ElevatedSurface,
+                    shape = RoundedCornerShape(4.dp)
+                ) {
+                    Text(
+                        pin.status.label,
+                        modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = when (pin.status) {
+                            PinStatus.ACTIVE -> TacticalColors.AlertGreen
+                            PinStatus.INACTIVE -> TacticalColors.SecondaryText
+                            PinStatus.ARCHIVED -> TacticalColors.DisabledText
+                            PinStatus.COMPLETED -> TacticalColors.OliveGreen
+                        }
                     )
                 }
             }

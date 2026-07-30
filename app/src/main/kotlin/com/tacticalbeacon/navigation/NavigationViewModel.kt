@@ -27,35 +27,30 @@ class NavigationViewModel @Inject constructor(
     val pinRepository: PinRepository,
     val breadcrumbRepository: BreadcrumbRepository,
     val settingsRepository: SettingsRepository,
-    val proximityAlertManager: ProximityAlertManager
+    val proximityAlertManager: ProximityAlertManager,
+    val navigationEngine: NavigationEngine
 ) : ViewModel() {
 
-    // ─── Settings ─────────────────────────────────────────────────────────────
     val settings = settingsRepository.settings.stateIn(
         viewModelScope,
         SharingStarted.WhileSubscribed(5000),
         AppSettings()
     )
 
-    // ─── Location ─────────────────────────────────────────────────────────────
     val locationState = locationManager.locationState
 
-    // ─── Compass ──────────────────────────────────────────────────────────────
     val azimuth = compassManager.azimuth
     val hasCompass = compassManager.hasCompass
 
-    // ─── Pins ─────────────────────────────────────────────────────────────────
     val pins = pinRepository.getAllPins().stateIn(
         viewModelScope,
         SharingStarted.WhileSubscribed(5000),
         emptyList()
     )
 
-    // ─── Navigation State ─────────────────────────────────────────────────────
     private val _navigationState = MutableStateFlow(NavigationState())
     val navigationState: StateFlow<NavigationState> = _navigationState.asStateFlow()
 
-    // ─── Breadcrumb Session ───────────────────────────────────────────────────
     private val _sessionId = MutableStateFlow(UUID.randomUUID().toString())
     val sessionId: StateFlow<String> = _sessionId.asStateFlow()
 
@@ -67,13 +62,12 @@ class NavigationViewModel @Inject constructor(
         emptyList()
     )
 
-    // ─── GPS Accuracy Warning ─────────────────────────────────────────────────
     val isGpsAccuracyPoor: StateFlow<Boolean> = locationState.map { loc ->
         loc.isValid && loc.accuracy > 20f
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), false)
 
     private var lastBreadcrumbTime = 0L
-    private val BREADCRUMB_MIN_DISTANCE = 5.0 // meters
+    private val BREADCRUMB_MIN_DISTANCE = 5.0
     private var lastBreadcrumbLat = 0.0
     private var lastBreadcrumbLon = 0.0
 
@@ -110,6 +104,7 @@ class NavigationViewModel @Inject constructor(
                         distanceMeters = distance,
                         bearingDegrees = bearing
                     )
+                    navigationEngine.updateLocation(loc)
                     proximityAlertManager.updateDistance(distance)
                 }
             }
@@ -147,30 +142,28 @@ class NavigationViewModel @Inject constructor(
         }
     }
 
-    // ─── Navigation Controls ──────────────────────────────────────────────────
-
     fun startNavigation(pin: Pin) {
         _navigationState.value = NavigationState(
             targetPin = pin,
             isNavigating = true
         )
+        navigationEngine.startNavigation(pin)
         val s = settings.value
         proximityAlertManager.start(s.alertVolume, s.vibrationStrength)
     }
 
     fun stopNavigation() {
         _navigationState.value = NavigationState()
+        navigationEngine.stopNavigation()
         proximityAlertManager.stop()
     }
-
-    // ─── Pin Management ───────────────────────────────────────────────────────
 
     fun savePin(pin: Pin) {
         viewModelScope.launch { pinRepository.savePin(pin) }
     }
 
     fun updatePin(pin: Pin) {
-        viewModelScope.launch { pinRepository.updatePin(pin) }
+        viewModelScope.launch { pinRepository.updatePin(pin.copy(timeModified = System.currentTimeMillis())) }
     }
 
     fun deletePin(pin: Pin) {
@@ -182,8 +175,6 @@ class NavigationViewModel @Inject constructor(
         }
     }
 
-    // ─── Breadcrumb Controls ──────────────────────────────────────────────────
-
     fun clearBreadcrumbs() {
         viewModelScope.launch {
             breadcrumbRepository.clearSession(_sessionId.value)
@@ -193,19 +184,15 @@ class NavigationViewModel @Inject constructor(
         }
     }
 
-    // ─── Settings ─────────────────────────────────────────────────────────────
-
     fun updateSettings(newSettings: AppSettings) {
         viewModelScope.launch {
             settingsRepository.updateSettings(newSettings)
-            // Restart location tracking with new interval
             val intent = Intent(context, LocationForegroundService::class.java).apply {
                 action = LocationForegroundService.ACTION_START
                 putExtra(LocationForegroundService.EXTRA_INTERVAL, newSettings.gpsUpdateIntervalMs)
                 putExtra(LocationForegroundService.EXTRA_BATTERY_SAVER, newSettings.batterySaverMode)
             }
             context.startForegroundService(intent)
-            // Update alert settings if active
             if (proximityAlertManager.isRunning()) {
                 proximityAlertManager.updateSettings(newSettings.alertVolume, newSettings.vibrationStrength)
             }
@@ -221,5 +208,6 @@ class NavigationViewModel @Inject constructor(
     override fun onCleared() {
         super.onCleared()
         proximityAlertManager.stop()
+        navigationEngine.stopNavigation()
     }
 }
