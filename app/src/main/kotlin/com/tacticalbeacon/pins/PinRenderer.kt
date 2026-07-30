@@ -30,12 +30,13 @@ class PinRenderer {
 
     fun getMarkerScale(pin: Pin, isSelected: Boolean): Float {
         val baseScale = when (pin.priority) {
-            PinPriority.CRITICAL -> 1.18f
+            PinPriority.CRITICAL -> 1.22f
             PinPriority.HIGH -> 1.10f
             PinPriority.NORMAL -> 1.0f
-            PinPriority.LOW -> 0.9f
+            PinPriority.LOW -> 0.92f
         }
-        return if (isSelected) baseScale + 0.08f else baseScale
+        val selectionBoost = if (isSelected) 0.06f else 0.0f
+        return baseScale + selectionBoost
     }
 
     fun createTacticalBitmap(context: Context, pin: Pin, isSelected: Boolean = false): Bitmap {
