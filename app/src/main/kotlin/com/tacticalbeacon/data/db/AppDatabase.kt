@@ -12,7 +12,7 @@ import com.tacticalbeacon.data.model.Pin
 @Database(
     entities = [Pin::class, Breadcrumb::class],
     version = 2,
-    exportSchema = true
+    exportSchema = false
 )
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {

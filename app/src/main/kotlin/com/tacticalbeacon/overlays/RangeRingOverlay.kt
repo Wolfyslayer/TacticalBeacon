@@ -6,9 +6,7 @@ import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Overlay
 import kotlin.math.cos
-import kotlin.math.pow
 import kotlin.math.sin
-import kotlin.math.toRadians
 
 class RangeRingOverlay : Overlay() {
 
@@ -80,7 +78,7 @@ class RangeRingOverlay : Overlay() {
         val earthCircumference = 40075000.0
         val metersPerPixel = earthCircumference * cos(
             Math.toRadians(latitude)
-        ) / (256.0 * pow(2.0, mapView.zoomLevelDouble))
+        ) / (256.0 * Math.pow(2.0, mapView.zoomLevelDouble))
         return meters / metersPerPixel
     }
 
